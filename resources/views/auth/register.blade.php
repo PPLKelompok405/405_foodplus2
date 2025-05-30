@@ -75,7 +75,7 @@
         <option value="" disabled selected>Pilih Role</option>
         <option value="Penyedia" {{ old('role') == 'Penyedia' ? 'selected' : '' }}>Donatur</option>
         <option value="penerima" {{ old('role') == 'penerima' ? 'selected' : '' }}>Penerima</option>
-        <option value="penerima" {{ old('role') == 'penerima' ? 'selected' : '' }}>Admin</option>
+        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
       </select>
 
       <input type="password" name="password" placeholder="Password" required />

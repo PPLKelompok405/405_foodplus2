@@ -16,24 +16,21 @@
   <div class="flex min-h-screen flex-col">
     <!-- Header -->
     <header class="bg-white p-4 flex justify-between items-center border-b">
-
-      <div>
-        <h2 class="text-xl font-semibold">FOOD+</h2>
-      </div>
+      <h2 class="text-xl font-semibold">FOOD+</h2>
       <a href="{{ route('login') }}" class="bg-[#317873] text-white px-4 py-2 rounded">Login</a>
     </header>
 
     <!-- Main Content -->
     <div class="flex-1 p-6 max-w-[1200px] mx-auto w-full">
-
+      
       <!-- Welcome Section -->
       <div class="bg-[#4E9A9A] text-white rounded-xl p-6 mb-6">
         <h1 class="text-3xl font-bold mb-2">Selamat Datang!</h1>
-        <p class="text-lg mb-4">
-          Terima kasih telah melihat platform Food+. Anda dapat mendonasikan makanan untuk membantu mereka yang membutuhkan loh. yukk ikut serta!
+        <p class="text-lg mb-4" style="text-align: justify;">
+          Terima kasih telah melihat platform Food+. Anda dapat mendonasikan makanan untuk membantu mereka yang membutuhkan loh. Yukk ikut serta!
         </p>
         <a href="{{ route('login') }}" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded">
-        Donasi Sekarang
+          Donasi Sekarang
         </a>
       </div>
 
@@ -42,7 +39,7 @@
 
       <!-- Stat Boxes -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-      <div class="bg-[#4E9A9A] p-4 rounded flex items-center space-x-4 text-white">
+        <div class="bg-[#4E9A9A] p-4 rounded flex items-center space-x-4 text-white">
           <img src="https://img.icons8.com/ios-filled/50/ffffff/restaurant.png" class="w-8 h-8" />
           <div>
             <p class="font-bold text-sm">Total Restoran</p>
@@ -58,8 +55,8 @@
         </div>
       </div>
 
- <!-- Grid Restoran -->
- @php
+      <!-- Grid Restoran -->
+      @php
         $restoranData = [
           ['nama' => 'Gacoan', 'tags' => ['Makanan', 'Cepat Saji', 'Mie'], 'views' => '302,624', 'likes' => '30,208', 'comments' => '33'],
           ['nama' => 'Wings O Wings', 'tags' => ['Makanan', 'Ayam', 'Aneka Ragam'], 'views' => '431,204', 'likes' => '36,650', 'comments' => '38'],
@@ -80,69 +77,34 @@
           ['nama' => 'Point Coffee', 'tags' => ['Minuman', 'Aneka Ragam', 'Murah'], 'views' => '333,956', 'likes' => '24,753', 'comments' => '203'],
           ['nama' => 'J.CO', 'tags' => ['Donat', 'Manis & Asin', 'Makanan'], 'views' => '357,845', 'likes' => '24,753', 'comments' => '195'],
         ];
-        
-        // Bagi data menjadi 3 kolom
+
         $chunk = ceil(count($restoranData) / 3);
         $column1 = array_slice($restoranData, 0, $chunk);
         $column2 = array_slice($restoranData, $chunk, $chunk);
         $column3 = array_slice($restoranData, $chunk * 2);
       @endphp
 
-      <!-- Grid layout -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Kolom 1 -->
-        <div class="space-y-4">
-          @foreach ($column1 as $resto)
-            <div class="bg-[#4E9A9A] p-4 rounded text-white flex items-start space-x-4">
-              <img src="{{ asset('images/restaurant-logo.png') }}" onerror="this.src='https://via.placeholder.com/50'" class="w-12 h-12 rounded" />
-              <div>
-                <h4 class="font-bold text-lg">{{ $resto['nama'] }}</h4>
-                <div class="flex flex-wrap gap-2 mt-1 text-xs">
-                  @foreach ($resto['tags'] as $tag)
-                    <span class="bg-[#317873] px-2 py-1 rounded">{{ $tag }}</span>
-                  @endforeach
+        @foreach ([$column1, $column2, $column3] as $column)
+          <div class="space-y-4">
+            @foreach ($column as $resto)
+              <div class="bg-[#4E9A9A] p-4 rounded text-white flex items-start space-x-4">
+                <img src="{{ asset('images/restaurant-logo.png') }}" onerror="this.src='https://via.placeholder.com/50'" class="w-12 h-12 rounded" />
+                <div>
+                  <h4 class="font-bold text-lg">{{ $resto['nama'] }}</h4>
+                  <div class="flex flex-wrap gap-2 mt-1 text-xs">
+                    @foreach ($resto['tags'] as $tag)
+                      <span class="bg-[#317873] px-2 py-1 rounded">{{ $tag }}</span>
+                    @endforeach
+                  </div>
+                  <p class="mt-2 text-sm text-gray-200" style="text-align: justify;">
+                    {{ $resto['views'] }} Views · {{ $resto['likes'] }} Likes · {{ $resto['comments'] }} comments
+                  </p>
                 </div>
-                <p class="mt-2 text-sm text-gray-200">{{ $resto['views'] }} Views · {{ $resto['likes'] }} Likes · {{ $resto['comments'] }} comments</p>
               </div>
-            </div>
-          @endforeach
-        </div>
-
-        <!-- Kolom 2 -->
-        <div class="space-y-4">
-          @foreach ($column2 as $resto)
-            <div class="bg-[#4E9A9A] p-4 rounded text-white flex items-start space-x-4">
-              <img src="{{ asset('images/restaurant-logo.png') }}" onerror="this.src='https://via.placeholder.com/50'" class="w-12 h-12 rounded" />
-              <div>
-                <h4 class="font-bold text-lg">{{ $resto['nama'] }}</h4>
-                <div class="flex flex-wrap gap-2 mt-1 text-xs">
-                  @foreach ($resto['tags'] as $tag)
-                    <span class="bg-[#317873] px-2 py-1 rounded">{{ $tag }}</span>
-                  @endforeach
-                </div>
-                <p class="mt-2 text-sm text-gray-200">{{ $resto['views'] }} Views · {{ $resto['likes'] }} Likes · {{ $resto['comments'] }} comments</p>
-              </div>
-            </div>
-          @endforeach
-        </div>
-
-        <!-- Kolom 3 -->
-        <div class="space-y-4">
-          @foreach ($column3 as $resto)
-            <div class="bg-[#4E9A9A] p-4 rounded text-white flex items-start space-x-4">
-              <img src="{{ asset('images/restaurant-logo.png') }}" onerror="this.src='https://via.placeholder.com/50'" class="w-12 h-12 rounded" />
-              <div>
-                <h4 class="font-bold text-lg">{{ $resto['nama'] }}</h4>
-                <div class="flex flex-wrap gap-2 mt-1 text-xs">
-                  @foreach ($resto['tags'] as $tag)
-                    <span class="bg-[#317873] px-2 py-1 rounded">{{ $tag }}</span>
-                  @endforeach
-                </div>
-                <p class="mt-2 text-sm text-gray-200">{{ $resto['views'] }} Views · {{ $resto['likes'] }} Likes · {{ $resto['comments'] }} comments</p>
-              </div>
-            </div>
-          @endforeach
-        </div>
+            @endforeach
+          </div>
+        @endforeach
       </div>
     </div>
   </div>
