@@ -18,6 +18,7 @@ Route::get('/guest/dashboard', function () {
     return view('guest.dashboard');
 })->name('dashboard.guest');
 
+
 // Route untuk autentikasi
 Route::get('/login', function () {
     return view('auth.login');
@@ -93,6 +94,10 @@ Route::post('/register', function (Request $request) {
     Route::get('/donate/dashboard', function () {
         return view('donate.dashboard');
     })->name('dashboard.donate');
+    
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard.admin');
 
     // Dashboard penerima
     Route::get('/receive/dashboard', function () {
