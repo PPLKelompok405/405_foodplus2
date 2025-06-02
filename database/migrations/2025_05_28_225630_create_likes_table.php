@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, "donor_id");
-            $table->foreignIdFor(User::class, "receiver_id");
-            $table->foreignIdFor(Donation::class, "donation_id");
-            $table->enum("status", ["pending", "completed", "cancelled"])->default("pending");
-
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Donation::class);
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('likes');
     }
 };

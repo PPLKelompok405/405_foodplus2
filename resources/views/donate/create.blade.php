@@ -8,6 +8,7 @@
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -140,37 +141,95 @@
             <h1>Tambah Donasi</h1>
         </div>
 
-        @if ($errors->any())
-            <div class="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="page-title">Tambah Donasi</div>
+                <div class="header-actions">
+                    <div class="notification">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M13.73 21a1.999 1.999 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="notification-badge"></div>
+                    </div>
+                    <div class="language-selector">
+                        <img src="{{ asset('images/flag-id.png') }}" alt="Indonesia Flag" class="flag">
+                        <span>ID</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
-        @endif
 
-        <form action="{{ route('donations.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="food_name">Nama Makanan</label>
-                <input type="text" id="food_name" name="food_name" value="{{ old('food_name') }}" required>
-            </div>
-            <div class="form-group">
-                <label for="category">Kategori Makanan</label>
-                <input type="text" id="category" name="category" value="{{ old('category') }}" required>
-            </div>
-            <div class="form-group">
-                <label for="quantity">Jumlah</label>
-                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required>
-            </div>
-            <div class="form-group">
-                <label for="location">Lokasi</label>
-                <input type="text" id="location" name="location" value="{{ old('location') }}" required>
-            </div>
-            <div class="button-group">
-                <a href="{{ route('donations.index') }}" class="btn btn-cancel">Batal</a>
-                <button type="submit" class="btn btn-save">Simpan</button>
+            <div class="content">
+                <div class="form-container">
+                    @if ($errors->any())
+                        <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                <form action="{{ route('donations.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label
+                                class="form-label"
+                                for="image_url"
+                                style="display: block; font-weight: bold; margin-bottom: 8px; font-size: 16px; color: #333;"
+                            >
+                                Upload Gambar Makanan
+                            </label>
+
+                            <input
+                                type="file"
+                                name="image"
+                                id="image_url"
+                                required
+                                style="
+                                    display: block;
+                                    padding: 10px;
+                                    font-size: 14px;
+                                    border: 2px dashed #aaa;
+                                    border-radius: 8px;
+                                    width: 100%;
+                                    cursor: pointer;
+                                    transition: border-color 0.3s ease;
+                                "
+                                onmouseover="this.style.borderColor='#777'"
+                                onmouseout="this.style.borderColor='#aaa'"
+                            >
+                            <small style="color: #666; font-size: 12px;">
+                                Format gambar harus .jpg, .jpeg, atau .png. Maksimal 4MB.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nama Makanan</label>
+                            <input type="text" name="food_name" class="form-input" value="{{ old('food_name') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Kategori Makanan</label>
+                            <input type="text" name="category" class="form-input" value="{{ old('category') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Jumlah</label>
+                            <input type="number" name="quantity" class="form-input" value="{{ old('quantity') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Lokasi</label>
+                            <input type="text" name="location" class="form-input" value="{{ old('location') }}" required>
+                        </div>
+                        <div class="form-actions">
+                            <a href="{{ route('donations.index') }}" class="cancel-btn">Batal</a>
+                            <button type="submit" class="save-btn">Simpan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </form>
     </div>

@@ -62,14 +62,60 @@
   <div class="right">
     <div class="login-box">
       <h2>Login</h2>
-      <form method="POST" action="{{ route('login') }}">
+      <form method="POST" id="login-form" action="javascript:void(0)">
         @csrf
-        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <button type="submit" class="btn-yellow">Login</button>
+        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required id="email"/>
+        <input type="password" name="password" placeholder="Password" required id="password"/>
+        <button type="submit" class="btn-yellow" id="login-button">Login</button>
       </form>
       <p>Belum punya akun? <a href="{{ route('register') }}">Register</a></p>
     </div>
+
+    <script>
+        const emailElement = document.getElementById("email");
+        const passwordElement = document.getElementById("password");
+        const form = document.getElementById("login-form");
+        const loginButton = document.getElementById("login-button");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = emailElement.value;
+            const password = passwordElement.value;
+                loginButton.textContent = "Logging in...";
+                loginButton.disabled = true;
+            const response = fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({email, password})
+            }).then(async (res) => {
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.message || "Something went wrong");
+                }
+
+                console.log("Login berhasil:", data);
+                const accessToken = data.data.accessToken;
+                localStorage.setItem("accessToken", accessToken);
+
+                if (data.data.role === "penyedia") {
+                    window.location.href = "/donate/dashboard";
+                } else if (data.data.role === "penerima") {
+                    window.location.href = "/receive/dashboard";
+                } else {
+                    window.location.href = "/admin/dashboard";
+                }
+            })
+            .catch(err => {
+                alert(err.message);
+                loginButton.textContent = "Login";
+                loginButton.disabled = false;
+            });
+    })
+
+    </script>
   </div>
 </body>
 </html>

@@ -58,38 +58,38 @@ Route::post('/register', function (Request $request) {
 })->name('register.submit');
 
 // Route untuk autentikasi login dengan redirect berdasarkan role
-Route::post('/login', function (Request $request) {
-    $controller = new AuthController();
-    $response = $controller->login($request);
+// Route::post('/login', function (Request $request) {
+//     $controller = new AuthController();
+//     $response = $controller->login($request);
 
-    // Jika response berhasil, redirect berdasarkan role
-    if ($response->getStatusCode() === 200) {
-        // Ambil token dari response
-        $responseData = json_decode($response->getContent());
-        $token = $responseData->data->accessToken ?? null;
+//     // Jika response berhasil, redirect berdasarkan role
+//     if ($response->getStatusCode() === 200) {
+//         // Ambil token dari response
+//         $responseData = json_decode($response->getContent());
+//         $token = $responseData->data->accessToken ?? null;
 
-        if ($token) {
-            // Login user dengan token menggunakan email
-            $user = User::where('email', $request->email)->first();
-            if ($user) {
-                Auth::login($user);
+//         if ($token) {
+//             // Login user dengan token menggunakan email
+//             $user = User::where('email', $request->email)->first();
+//             if ($user) {
+//                 Auth::login($user);
 
-                // Redirect berdasarkan role
-                if ($user->role === 'penyedia') {
-                    return redirect()->route('dashboard.donate');
-                } else {
-                    return redirect()->route('dashboard.receive');
-                }
-            }
-        }
-    }
+//                 // Redirect berdasarkan role
+//                 if ($user->role === 'penyedia') {
+//                     return redirect()->route('dashboard.donate')->with("accessToken", $token);
+//                 } else {
+//                     return redirect()->route('dashboard.receive')->with ("accessToken", $token);
+//                 }
+//             }
+//         }
+//     }
 
-    // Jika gagal, kembalikan response dari controller
-    return $response;
-})->name('login.submit');
+//     // Jika gagal, kembalikan response dari controller
+//     return $response;
+// })->name('login.submit');
 
+// MIDDLEWARE
 // Route untuk dashboard donatur (yang sudah login)
-Route::middleware(['auth:sanctum'])->group(function () {
     // Dashboard donatur
     Route::get('/donate/dashboard', function () {
         return view('donate.dashboard');
@@ -108,6 +108,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user/dashboard', function () {
         return view('user.dashboard');
     })->name('dashboard.user');
+
+    // Dashboard admin
+    Route::get("/admin/dashboard", function () {
+        return view("Admin.dashboard");
+    })->name("dashboard.admin");
 
     // Route untuk donasi
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
@@ -128,6 +133,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return view('donate.edit', ["donation" => $donation]);
     })->name('donations.edit');
 
+    // MIDDLEWARE
+
 
     Route::put('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
     Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
@@ -144,7 +151,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // Redirect ke halaman guest setelah logout
         return redirect()->route('dashboard.guest');
     })->name('logout');
-});
 
 // Route untuk manajemen donasi (guest)
 Route::get('/guest/manajemendonasi', function () {
@@ -152,14 +158,22 @@ Route::get('/guest/manajemendonasi', function () {
     return view('guest.manajemendonasi', ['donations' => $donations]);
 })->name('guest.manajemendonasi');
 
-Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.create');
+// Routes untuk penerima donasi
+// Route::middleware(['auth:sanctum', 'role:penerima'])->group(function () {
+//     Route::get('/receiver/dashboard', [App\Http\Controllers\DonationRequestController::class, 'dashboard'])->name('receiver.dashboard');
+//     Route::get('/receiver/request/{restoId}', [App\Http\Controllers\DonationRequestController::class, 'showRequestForm'])->name('receiver.request');
+//     Route::get('/receiver/requests', [App\Http\Controllers\DonationRequestController::class, 'myRequests'])->name('receiver.requests');
+//     Route::get('/receiver/history', [App\Http\Controllers\DonationRequestController::class, 'history'])->name('receiver.history');
+//     Route::post('/receiver/request', [App\Http\Controllers\DonationRequestController::class, 'store'])->name('donation.request');
+// });
+Route::get('/receiver/request/{restoId}', function () {
+    return view("request donasi.request");
+})->name('receiver.request');
 
-// Route untuk halaman request donasi
-Route::get('/request', function () {
-    return view('request');
+
+// API routes
+Route::prefix('api')->group(function () {
+    Route::get('/donations/available', [App\Http\Controllers\DonationRequestController::class, 'getAvailableDonations']);
 });
 
-// Route untuk halaman kelola akun
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// ... existing code ...
