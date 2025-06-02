@@ -6,142 +6,92 @@
   <title>Dashboard Penerima - FOOD+</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Fredoka', sans-serif;
-      background-color: #fff;
-      padding: 0;
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
-
+    body {
+      display: flex;
+      background-color: #f5f5f5;
+      color: #0f172a;
+    }
+    aside {
+      width: 250px;
+      background-color: #fff;
+      padding: 40px 20px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #e5e7eb;
+    }
+    aside h1 {
+      font-weight: 700;
+      font-size: 24px;
+      color: #0f172a;
+      margin-bottom: 40px;
+    }
+    aside .nav-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      color: #64748b;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    aside .nav-item i {
+      margin-right: 10px;
+    }
+    main {
+      flex: 1;
+      padding: 30px;
+    }
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px 0 40px;
-      position: relative;
+      margin-bottom: 30px;
     }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      position: relative;
+      margin-bottom: 30px;
     }
-
-    .notification-icon {
-      position: relative;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .notification-icon .dot {
-      position: absolute;
-      top: 0px;
-      right: -2px;
-      width: 8px;
-      height: 8px;
-      background-color: red;
-      border-radius: 50%;
-    }
-
-    .dropdown-wrapper {
-      position: relative;
-    }
-
-    .user-dropdown {
-      background-color: #fff3cd;
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .dropdown-text {
-      font-size: 14px;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 45px;
-      right: 0;
-      background-color: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 999;
-    }
-
-    .dropdown-menu a,
-    .dropdown-menu form button {
-      display: block;
-      padding: 10px 15px;
-      color: #333;
-      text-decoration: none;
-      background-color: white;
-      border: none;
-      text-align: left;
-      width: 100%;
-      font-family: 'Fredoka', sans-serif;
-      cursor: pointer;
-    }
-
-    .dropdown-menu a:hover,
-    .dropdown-menu form button:hover {
-      background-color: #f2f2f2;
-    }
-
-    .stats-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px 40px;
-    }
-
-    .stat-box {
+    .summary .card {
       background-color: #3db4a1;
-      color: white;
       padding: 20px;
+      color: white;
       border-radius: 10px;
-      flex: 1 1 180px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-
-    .stat-box h4 {
-      margin: 10px 0 5px;
-    }
-
-    .stat-box .icon {
+    .summary .card i {
       font-size: 24px;
       margin-bottom: 10px;
     }
-
-    .donasi-box {
+    .donasi-harian {
       background-color: #3db4a1;
       color: white;
       padding: 20px;
       border-radius: 10px;
-      text-align: center;
-      margin: 20px 40px;
-      max-width: 200px;
+      width: 250px;
+      margin-left: auto;
+      margin-bottom: 30px;
     }
-
-    h3 {
-      margin: 40px 40px 20px;
+    .donasi-harian h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
     }
-
     .restoran {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      padding: 0 40px 40px;
     }
-
     .restoran-card {
       background-color: #3db4a1;
       padding: 15px;
@@ -149,9 +99,7 @@
       color: white;
       display: flex;
       align-items: center;
-      min-height: 100px;
     }
-
     .restoran-card img {
       width: 50px;
       height: 50px;
@@ -159,19 +107,23 @@
       border-radius: 8px;
       margin-right: 15px;
     }
-
+    .restoran-info {
+      flex: 1;
+    }
     .restoran-info h4 {
-      margin: 0;
-      font-size: 16px;
+      margin-bottom: 5px;
     }
-
     .restoran-info .tags {
-      font-size: 14px;
-    }
-
-    .restoran-info .stats {
       font-size: 12px;
-      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    .restoran-info .stats {
+      font-size: 10px;
+    }
+    .footer-note {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -198,7 +150,6 @@
         </div>
       </div>
     </div>
-  </div>
 
     {{-- @php
       // Mengambil data statistik dari database
@@ -343,8 +294,8 @@
     }).catch(err => console.log({err}))
 
     function toggleDropdown() {
-      const menu = document.getElementById("dropdownMenu");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
 
     document.addEventListener('click', function(event) {
