@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation;
 use App\Models\User;
-use App\Notifications\DonationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
 
 class DonationController extends Controller implements HasMiddleware
 {
@@ -23,7 +20,7 @@ class DonationController extends Controller implements HasMiddleware
     }
 
     public function index() {
-        $donations = Donation::with("user")->get();
+        $donations = Donation::all();
 
         return response()->json([
             "status" => "Success",
@@ -32,30 +29,13 @@ class DonationController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function getDonationsByResto(Request $request) {
-        $donations = Donation::where("user_id", $request->user()->id)->get();
-
-        return response()->json([
-        "status" => "Success",
-        "message" => "Donations from this restaurant retrieved",
-        "data" => $donations
-    ]);
-    }
-
     public function store(Request $request) {
-        // dd($request->all());
-
-
         $validatedData = $request->validate([
             "food_name" => "string|required",
             "quantity" => "integer|required",
             "location" => "string|required",
-            "category" => "string|required",
-            "image" => "image|mimes:jpeg,jpg,png|max:4096|nullable"
+            "category" => "string|required"
         ]);
-        if($request->hasFile("image")) {
-            $validatedData["image_url"] = $request->file("image")->store("donation-images", "public");
-        }
 
         if(!Gate::allows("insert-donation")) {
             abort(403, "Dont have access to this resource");
@@ -65,10 +45,6 @@ class DonationController extends Controller implements HasMiddleware
             ...$validatedData,
             "user_id" => $request->user()->id
         ]);
-$subscribers = User::whereHas('subscriptions', function($query) use ($request) {
-    $query->where('donor_id', $request->user()->id);
-})->get();
-        Notification::send($subscribers, new DonationNotification($donation, $request->user()));
         return redirect()->route("dashboard.donate");
 
         // return response()->json([
@@ -99,17 +75,8 @@ $subscribers = User::whereHas('subscriptions', function($query) use ($request) {
             "food_name" => "string|sometimes",
             "quantity" => "integer|sometimes",
             "location" => "string|sometimes",
-            "category" => "string|sometimes",
-            "image" => "image|nullable|mimes:jpg,jpeg,png|max:4096"
+            "category" => "string|sometimes"
         ]);
-
-        if($request->hasFile("image")) {
-            if($donation->image_url && Storage::disk("public")->exists($donation->image_url)) {
-                Storage::disk("public")->delete($donation->image_url);
-            }
-            $validatedData["image_url"] = $request->file("image")->store("donation-images", "public");
-
-        }
 
         $donation->update($validatedData);
 

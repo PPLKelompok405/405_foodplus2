@@ -92,11 +92,6 @@
             <div class="content">
                 <div class="detail-container">
                     <div class="detail-item">
-                        <div class="detail-label">Gambar Makanan</div>
-                        <div class="detail-value">
-                            <img src="{{ asset("storage/" . $donation->image_url)  }}" /></div>
-                    </div>
-                    <div class="detail-item">
                         <div class="detail-label">Nama Makanan</div>
                         <div class="detail-value">{{ $donation->food_name }}</div>
                     </div>

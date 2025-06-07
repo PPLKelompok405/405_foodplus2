@@ -131,197 +131,233 @@
   <aside>
     <div>
       <h1>FOOD+</h1>
+      <div class="nav-item">👤 Profile</div>
+      <div class="nav-item">📈 Donasi</div>
     </div>
+    <div class="nav-item">🚪 LogOut</div>
   </aside>
   <main>
     <div class="topbar">
       <h2>Dashboard</h2>
-      <div style="position: relative;">
-        <button onclick="toggleDropdown()" style="background-color: white; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-          <span style="margin-right: 5px;">🔔</span>
-          <span>{{ Auth::user()->name ?? 'penerima' }} ▼</span>
-        </button>
-        <div id="userDropdown" style="display: none; position: absolute; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; margin-top: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10;">
-          <a href="{{ route('profile.edit') }}" style="display: block; padding: 10px 20px; text-decoration: none; color: #0f172a;">Profile</a>
-          <form method="POST" style="margin: 0;">
-            @csrf
-            <button type="submit" style="display: block; width: 100%; text-align: left; padding: 10px 20px; background: none; border: none; cursor: pointer; color: #0f172a;" id="logout-button">Log Out</button>
-          </form>
-        </div>
+      <div>
+        🔔 <span>Eng (US)</span>
       </div>
     </div>
 
-    {{-- @php
-      // Mengambil data statistik dari database
-      $totalDonatur = \App\Models\User::where('role', 'penyedia')->count();
-      $totalRestoran = \App\Models\User::where('role', 'penyedia')->count();
-      $totalPenerima = \App\Models\User::where('role', 'penerima')->count();
-      $totalMakananTersedia = \App\Models\Donation::where('status', 'available')->count();
-      $totalPengeluaran = \App\Models\Donation::count();
-      $totalPengiriman = \App\Models\Donation::where('status', 'claimed')->count();
-
-      // Menghitung total donasi hari ini
-      $donasiHarian = \App\Models\Donation::whereDate('created_at', \Carbon\Carbon::today())->sum('quantity');
-
-      // Mengambil data restoran (penyedia)
-      $penyediaList = \App\Models\User::where('role', 'penyedia')
-        ->with(['donations' => function($query) {
-            $query->where('status', 'available');
-        }])
-        ->take(6)
-        ->get();
-    @endphp --}}
-
-    <div class="summary" id="summary">
-      <div class="card" id="total-donatur">👤<div>Total Donatur<br><strong>{{ $totalDonatur ??= 0 }}</strong></div></div>
-      <div class="card" id="total-restoran">🍽<div>Total Restoran<br><strong>{{ $totalRestoran  ??= 0 }}</strong></div></div>
-      <div class="card" id="total-penerima">⬇<div>Total Penerima<br><strong>{{ $totalPenerima  ??= 0}}</strong></div></div>
-      <div class="card" id="total-makanan">🍱<div>Total Makanan Tersedia<br><strong>{{ $totalMakananTersedia  ??= 0 }}</strong></div></div>
-      {{-- <div class="card">💸<div>Total Pengeluaran<br><strong>{{ $totalPengeluaran  ??= 0 }}</strong></div></div> --}}
-      {{-- <div class="card">🚚<div>Total Pengiriman<br><strong>{{ $totalPengiriman  ??= 0 }}</strong></div></div> --}}
+    <div class="summary">
+      <div class="card">
+        👤
+        <div>Total Donatur<br><strong>13</strong></div>
+      </div>
+      <div class="card">
+        🍽
+        <div>Total Restoran<br><strong>16</strong></div>
+      </div>
+      <div class="card">
+        ⬇
+        <div>Total Penerima<br><strong>0</strong></div>
+      </div>
+      <div class="card">
+        🍱
+        <div>Total Makanan Tersedia<br><strong>13</strong></div>
+      </div>
+      <div class="card">
+        💸
+        <div>Total Pengeluaran<br><strong>13</strong></div>
+      </div>
+      <div class="card">
+        🚚
+        <div>Total Pengiriman<br><strong>13</strong></div>
+      </div>
     </div>
 
-    <div class="donasi-harian" id="donasi-harian">
+    <div class="donasi-harian">
       <h3>Donasi Harian</h3>
-      <p style="font-size: 24px; font-weight: bold;">{{ $donasiHarian  ??= 0 }}pcs</p>
-      <p>{{ \Carbon\Carbon::now()->format('d F Y') }}</p>
+      <p style="font-size: 24px; font-weight: bold;">90pcs</p>
+      <p>9 February 2025</p>
     </div>
 
     <h3 style="margin-bottom: 20px;">Restoran</h3>
-    <div class="restoran" id="restoran">
-      {{-- @forelse($penyediaList as $penyedia)
+    <div class="restoran">
+      @php
+        // Data dummy untuk restoran
+        $restorans = [
+          (object) [
+            'nama' => 'Gacoan',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Makanan, Cepat Saji, Mie',
+            'views' => '302,624',
+            'likes' => '30,908',
+            'comments' => '33'
+          ],
+          (object) [
+            'nama' => 'Solaria',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Makanan, Restoran, Terjamin',
+            'views' => '101,650',
+            'likes' => '26,743',
+            'comments' => '209'
+          ],
+          (object) [
+            'nama' => 'Kopi Kenangan',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Minuman, Kopi, Cepat Saji',
+            'views' => '234,504',
+            'likes' => '13,301',
+            'comments' => '184'
+          ],
+          (object) [
+            'nama' => 'Wings O Wings',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Makanan, Ayam, Aneka Ragam',
+            'views' => '433,204',
+            'likes' => '36,050',
+            'comments' => '38'
+          ],
+          (object) [
+            'nama' => 'Ayam Crisbar',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Ayam, Cepat Saji, Murah',
+            'views' => '401,456',
+            'likes' => '24,753',
+            'comments' => '260'
+          ],
+          (object) [
+            'nama' => 'Burger King',
+            'logo_url' => 'https://via.placeholder.com/50',
+            'kategori' => 'Makanan, Cepat Saji, Restoran',
+            'views' => '242,634',
+            'likes' => '23,430',
+            'comments' => '134'
+          ]
+        ];
+      @endphp
+      
+      @foreach($restorans as $resto)
       <div class="restoran-card">
-        <img src="https://via.placeholder.com/50" alt="Logo">
+        <img src="{{ $resto->logo_url ?? 'https://via.placeholder.com/50' }}" alt="Logo">
         <div class="restoran-info">
-          <h4>{{ $penyedia->name }}</h4>
-          <div class="tags">
-            @php
-              $kategori = $penyedia->donations->pluck('category')->unique()->implode(', ');
-              echo $kategori ?: 'Belum ada kategori';
-            @endphp
-          </div>
-          <div class="stats">
-            {{ rand(100000, 500000) }} Views · {{ rand(10000, 50000) }} Likes · {{ rand(10, 300) }} comments
-          </div>
-          <a href="{{ route('receiver.request', ['restoId' => $penyedia->id]) }}" class="request-btn" style="display: inline-block; margin-top: 10px; background-color: #ffb703; color: #333; text-decoration: none; padding: 5px 10px; border-radius: 5px; font-weight: bold;">Request Donasi</a>
+          <h4>{{ $resto->nama }}</h4>
+          <div class="tags">{{ $resto->kategori }}</div>
+          <div class="stats">{{ $resto->views }} Views · {{ $resto->likes }} Likes · {{ $resto->comments }} comments</div>
         </div>
       </div>
-      @empty
-      <div style="grid-column: span 3; text-align: center; padding: 20px; background-color: #f5f5f5; border-radius: 10px;">
-        Tidak ada restoran yang tersedia saat ini.
-      </div>
-      @endforelse --}}
+      @endforeach
     </div>
     <p class="footer-note">See Details</p>
   </main>
+</body>
+</html>
 
-  <script>
-    const summaryComponent = document.getElementById("summary");
-    const donasiHarian = document.getElementById("donasi-harian")
-    const totalDonatur = document.getElementById("total-donatur")
-    const totalRestoran = document.getElementById("total-restoran")
-    const totalPenerima = document.getElementById("total-penerima")
-    const totalMakanan = document.getElementById("total-makanan")
+    @if(session('success'))
+    <div class="alert alert-success">
+      {{ session('success') }}
+    </div>
+    @endif
 
-    const restoranCard = document.getElementById("restoran");
-
-    fetch("/api/statistics/receiver/dashboard/summary", {method: "GET"}).then(response => response.json()).then(({data}) => {
-        const totalResto = data.total_resto;
-        const totalDonation = data.total_donation;
-        const todayDonation = data.today_donation;
-        const totalReceiver = data.total_receiver;
-        totalDonatur.innerHTML = `
-        <div class='flex items-center'>
-            <span>👤</span>
-            Total Donatur<br><strong>${totalResto}</strong></div>`
-                    totalRestoran.innerHTML = `
-        <div class='flex items-center'>
-            <span>🍽</span>
-            Total Donatur<br><strong>${totalResto}</strong></div>`
-                    totalPenerima.innerHTML = `
-        <div class='flex items-center'>
-            <span>⬇</span>
-            Total Donatur<br><strong>${totalReceiver}</strong></div>`
-                    totalMakanan.innerHTML = `
-        <div class='flex items-center'>
-            <span>🍱</span>
-            Total Donatur<br><strong>${totalDonation}</strong></div>`
-        donasiHarian.innerHTML = `
-             <h3>Donasi Harian</h3>
-            <p style="font-size: 24px; font-weight: bold;">${todayDonation} pcs</p>
-            <p>{{ \Carbon\Carbon::now()->format('d F Y') }}</p>
-        `
-    })
-
-    fetch('/api/donations', {headers: {
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-    }}).then(response => response.json()).then(({data}) => {
-        restoranCard.innerHTML = ``;
-        console.log({data});
-        data.map(donation => {
-            console.log({donation})
-            restoranCard.innerHTML += `
-        <div class="restoran-card">
-        <img src="http://localhost:8000/storage/${donation.image_url}" alt="Logo">
-        <div class="restoran-info">
-          <h4>${donation.food_name} - ${donation.user.name}</h4>
-          <div class="tags">
-          ${donation.category}
-          </div>
-          <div class="stats">
-                <p class="mt-2 text-sm text-gray-200">302,624 Views ·  3000 Likes · 400 comments</p>
-          </div>
-          <button type="button" id="request-donasi" class="request-btn " style="cursor: pointer; display: inline-block; margin-top: 10px; background-color: #ffb703; color: #333; padding: 5px 10px; border-radius: 5px; font-weight: bold;" id="request-donasi">
-            Request Donasi
-        </button>
-        </div>
+    <div class="summary">
+      <div class="card">
+        📦
+        <div>Total Permintaan<br><strong>{{ $requests->count() }}</strong></div>
       </div>
-        `
-        const requestDonationButton = document.getElementById("request-donasi")
-        requestDonationButton.addEventListener("click", () => {
-            window.location.href = `http://localhost:8000/receiver/request/${donation.id}`
-        })
-        })
+      <div class="card">
+        ✅
+        <div>Permintaan Diterima<br><strong>{{ $requests->where('status', 'received')->count() }}</strong></div>
+      </div>
+      <div class="card">
+        ⏳
+        <div>Permintaan Pending<br><strong>{{ $requests->where('status', 'pending')->count() }}</strong></div>
+      </div>
+    </div>
 
-    })
+    <div class="request-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3>Permintaan Saya</h3>
+        <a href="{{ route('receive.create') }}" class="btn btn-primary">+ Buat Permintaan Baru</a>
+      </div>
+      
+      @if($requests->count() > 0)
+      <div class="request-table-container">
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>Makanan</th>
+              <th>Tanggal Permintaan</th>
+              <th>Status</th>
+              <th>Catatan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($requests as $request)
+            <tr>
+              <td>{{ $request->food->name }}</td>
+              <td>{{ $request->created_at->format('d M Y, H:i') }}</td>
+              <td>
+                <span class="status-badge status-{{ $request->status }}">
+                  @if($request->status == 'pending')
+                    Menunggu
+                  @elseif($request->status == 'approved')
+                    Disetujui
+                  @elseif($request->status == 'received')
+                    Diterima
+                  @else
+                    Dibatalkan
+                  @endif
+                </span>
+              </td>
+              <td>{{ $request->notes ?? '-' }}</td>
+              <td>
+                <div style="display: flex; gap: 5px;">
+                  <a href="{{ route('receive.show', $request->id) }}" class="btn btn-secondary">Detail</a>
+                  
+                  @if($request->status == 'approved')
+                  <form action="{{ route('receive.mark-received', $request->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success">Terima</button>
+                  </form>
+                  @endif
+                  
+                  @if($request->status == 'pending')
+                  <a href="{{ route('receive.edit', $request->id) }}" class="btn btn-primary">Edit</a>
+                  
+                  <form action="{{ route('receive.destroy', $request->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus permintaan ini?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                  </form>
+                  @endif
+                </div>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+      @else
+      <div style="text-align: center; padding: 30px; background-color: white; border-radius: 10px;">
+        <p>Anda belum memiliki permintaan. Silakan buat permintaan baru.</p>
+      </div>
+      @endif
+    </div>
 
-    fetch("/api/notifications", {headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    }}).then(response => response.json())
-    .then(notification => {
-        console.log({notification})
-        console.log(localStorage.getItem("accessToken"))
-    }).catch(err => console.log({err}))
-
-    function toggleDropdown() {
-      const dropdown = document.getElementById('userDropdown');
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    }
-
-    document.addEventListener('click', function(event) {
-      const dropdown = document.getElementById('userDropdown');
-      const button = event.target.closest('button');
-      if (!dropdown.contains(event.target) && !button) {
-        dropdown.style.display = 'none';
-      }
-    });
-
-     const logoutButtonElement = document.getElementById("logout-button");
-            logoutButtonElement.addEventListener("click",  async e => {
-                e.preventDefault();
-                console.log("clicked");
-                try{
-                const response = await fetch("/api/auth/logout", {method: "POST", headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    "Content-Type": "application/json"
-                }});
-                const json = await response.json();
-                localStorage.removeItem("accessToken");
-                window.location.href = "/"
-                }catch(err){
-                    alert(err.message);
-                }
-            })
-  </script>
+    <div class="request-section">
+      <h3 style="margin-bottom: 15px;">Makanan Tersedia</h3>
+      
+      <div class="restoran">
+        @foreach($availableFoods as $food)
+        <div class="restoran-card">
+          <img src="{{ $food->image_url ?? 'https://via.placeholder.com/50' }}" alt="Food Image">
+          <div class="restoran-info">
+            <h4>{{ $food->name }}</h4>
+            <div class="tags">{{ $food->category }}</div>
+            <div class="stats">Dari: {{ $food->donor_name }} · Tersedia hingga: {{ \Carbon\Carbon::parse($food->expiry_date)->format('d M Y') }}</div>
+          </div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+  </main>
 </body>
 </html>

@@ -183,16 +183,14 @@
                     </div>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                            Name
+                            {{ Auth::user()->name }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a href="{{ route('profile.edit') }}" class="dropdown-item">Profile</a>
-                            </li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST">
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item" id="logout-button">Log Out</button>
+                                    <button type="submit" class="dropdown-item">Profile</button>
+                                    <button type="submit" class="dropdown-item">Log Out</button>
                                 </form>
                             </li>
                         </ul>
@@ -207,8 +205,8 @@
                     </div>
                 @endif
 
-                <div class="welcome-banner" >
-                    <h2 id="banner">Selamat Datang!</h2>
+                <div class="welcome-banner">
+                    <h2>Selamat Datang, {{ Auth::user()->name }}!</h2>
                     <p>Terima kasih telah bergabung dengan platform Food+. Anda dapat mendonasikan makanan untuk membantu mereka yang membutuhkan.</p>
                     <a href="{{ route('donations.create') }}" class="btn btn-warning">Donasi Sekarang</a>
                 </div>
@@ -285,25 +283,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const dropdownMenuButton = document.getElementById("dropdownMenuButton");
-        const banner = document.getElementById("banner");
-        fetch("/api/user", {headers: {
-             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        }}).then(response => response.json()).then(user => {
-            dropdownMenuButton.textContent = user.name
-            banner.innerHTML = `
-            <h2>Selamat Datang, ${user.name}!</h2>
-        `
-        }).catch(err => {
-            allert(err)
-        })
-        fetch('/api/donations/resto/all', {headers: {
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        }})
+        fetch('/api/donations')
             .then(response => response.json())
-            .then(({data, status, message}) => {
+            .then(({data}) => {
                 const tbody = document.getElementById('donation-table-body');
-                tbody.innerHTML = '';
+                tbody.innerHTML = ''; // kosongkan isi awalnya
 
                 if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada donasi</td></tr>';
@@ -341,23 +325,6 @@
                 console.error('Gagal mengambil data:', error);
                 document.getElementById('donation-table-body').innerHTML = '<tr><td colspan="7" class="text-center">Terjadi kesalahan saat memuat data</td></tr>';
             });
-
-            const logoutButtonElement = document.getElementById("logout-button");
-            logoutButtonElement.addEventListener("click",  async e => {
-                e.preventDefault();
-                try{
-                const response = await fetch("/api/auth/logout", {method: "POST", headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    "Content-Type": "application/json"
-                }});
-                const json = await response.json();
-                localStorage.removeItem("accessToken");
-                window.location.href = "/"
-                }catch(err){
-                    console.log({err});
-                    alert(err.message);
-                }
-            })
     </script>
 
 </body>

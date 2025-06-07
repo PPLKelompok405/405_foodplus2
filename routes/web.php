@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
 use App\Models\Donation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,9 +75,9 @@ Route::post('/login', function (Request $request) {
 
                 // Redirect berdasarkan role
                 if ($user->role === 'penyedia') {
-                    return redirect()->route('dashboard.donate')->with("accessToken", $token);
+                    return redirect()->route('dashboard.donate');
                 } else {
-                    return redirect()->route('dashboard.receive')->with ("accessToken", $token);
+                    return redirect()->route('dashboard.receive');
                 }
             }
         }
@@ -88,9 +87,8 @@ Route::post('/login', function (Request $request) {
     return $response;
 })->name('login.submit');
 
-// MIDDLEWARE
-// Add all authenticated routes inside this middleware group
-Route::middleware(['web', 'auth'])->group(function () {
+// Route untuk dashboard donatur (yang sudah login)
+Route::middleware(['auth:sanctum'])->group(function () {
     // Dashboard donatur
     Route::get('/donate/dashboard', function () {
         return view('donate.dashboard');
@@ -105,11 +103,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/user/dashboard', function () {
         return view('user.dashboard');
     })->name('dashboard.user');
-
-    // Dashboard admin
-    Route::get("/admin/dashboard", function () {
-        return view("Admin.dashboard");
-    })->name("dashboard.admin");
 
     // Route untuk donasi
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
@@ -130,25 +123,23 @@ Route::middleware(['web', 'auth'])->group(function () {
         return view('donate.edit', ["donation" => $donation]);
     })->name('donations.edit');
 
-    // MIDDLEWARE
-
 
     Route::put('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
     Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+
+    // Route untuk logout
+    Route::post('/logout', function (Request $request) {
+        // Instead of calling controller method, handle logout directly
+        Auth::guard('web')->logout();
+
+        // Invalidate session and regenerate CSRF token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect ke halaman guest setelah logout
+        return redirect()->route('dashboard.guest');
+    })->name('logout');
 });
-
-// Route untuk logout
-Route::post('/logout', function (Request $request) {
-    // Instead of calling controller method, handle logout directly
-    Auth::guard('web')->logout();
-
-    // Invalidate session and regenerate CSRF token
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    // Redirect ke halaman guest setelah logout
-    return redirect()->route('dashboard.guest');
-})->name('logout');
 
 // Route untuk manajemen donasi (guest)
 Route::get('/guest/manajemendonasi', function () {
@@ -156,24 +147,19 @@ Route::get('/guest/manajemendonasi', function () {
     return view('guest.manajemendonasi', ['donations' => $donations]);
 })->name('guest.manajemendonasi');
 
-// Routes untuk penerima donasi
-// Route::middleware(['auth:sanctum', 'role:penerima'])->group(function () {
-//     Route::get('/receiver/dashboard', [App\Http\Controllers\DonationRequestController::class, 'dashboard'])->name('receiver.dashboard');
-//     Route::get('/receiver/request/{restoId}', [App\Http\Controllers\DonationRequestController::class, 'showRequestForm'])->name('receiver.request');
-//     Route::get('/receiver/requests', [App\Http\Controllers\DonationRequestController::class, 'myRequests'])->name('receiver.requests');
-//     Route::get('/receiver/history', [App\Http\Controllers\DonationRequestController::class, 'history'])->name('receiver.history');
-//     Route::post('/receiver/request', [App\Http\Controllers\DonationRequestController::class, 'store'])->name('donation.request');
-// });
-Route::get('/receiver/request/{restoId}', function () {
-    return view("request donasi.request");
-})->name('receiver.request');
-
-
-// API routes
-Route::prefix('api')->group(function () {
-    Route::get('/donations/available', [App\Http\Controllers\DonationRequestController::class, 'getAvailableDonations']);
+// Rute untuk penerima donasi
+Route::middleware(['auth'])->group(function () {
+    // Dashboard penerima
+    Route::get('/receive/dashboard', [App\Http\Controllers\ReceiveController::class, 'dashboard'])->name('receive.dashboard');
+    
+    // CRUD permintaan donasi
+    Route::get('/receive/create', [App\Http\Controllers\ReceiveController::class, 'create'])->name('receive.create');
+    Route::post('/receive', [App\Http\Controllers\ReceiveController::class, 'store'])->name('receive.store');
+    Route::get('/receive/{id}', [App\Http\Controllers\ReceiveController::class, 'show'])->name('receive.show');
+    Route::get('/receive/{id}/edit', [App\Http\Controllers\ReceiveController::class, 'edit'])->name('receive.edit');
+    Route::put('/receive/{id}', [App\Http\Controllers\ReceiveController::class, 'update'])->name('receive.update');
+    Route::delete('/receive/{id}', [App\Http\Controllers\ReceiveController::class, 'destroy'])->name('receive.destroy');
+    
+    // Menandai permintaan sebagai diterima
+    Route::put('/receive/{id}/mark-received', [App\Http\Controllers\ReceiveController::class, 'markReceived'])->name('receive.mark-received');
 });
-
-// Profile routes
-Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');

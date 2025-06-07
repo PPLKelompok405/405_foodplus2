@@ -1,141 +1,108 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Dashboard</title>
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
         body {
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding: 2rem;
+            padding: 0 2rem;
             background-color: #fff;
             color: #111;
         }
-
         h1 {
             font-size: 24px;
-            margin-bottom: 1rem;
+            margin-top: 1rem;
             color: #1e2a47;
         }
-
         .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-
         .stat-box {
+            display: flex;
+            align-items: center;
             background-color: #f5fafa;
             padding: 1rem;
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
+            width: 230px;
         }
-
         .stat-box i {
-            font-size: 22px;
+            font-size: 24px;
+            margin-right: 12px;
+            color: #319795;
         }
-
+        .stat-box span {
+            font-weight: 600;
+        }
         .donation-box {
             background-color: #4ba4a3;
             color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            width: 220px;
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            width: 250px;
             float: right;
-            margin-bottom: 3rem;
         }
-
         .donation-box h2 {
-            font-size: 16px;
+            font-size: 18px;
             margin-bottom: 10px;
         }
-
         .donation-box p {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
         }
-
         .donation-box small {
-            font-size: 13px;
+            display: block;
+            margin-top: 5px;
         }
-
         .search-bar {
+            margin-top: 3rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
+            gap: 1rem;
         }
-
         .search-bar input {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 8px;
+            width: 80%;
+            padding: 0.5rem;
+            font-size: 16px;
             border: 1px solid #ccc;
+            border-radius: 8px;
         }
-
         .search-bar button {
-            padding: 10px 20px;
+            padding: 0.5rem 1.5rem;
             background-color: #1e7f7f;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
         }
-
         table {
             width: 100%;
-            border-collapse: collapse;
             margin-top: 1rem;
+            border-collapse: collapse;
         }
-
         th, td {
             text-align: left;
             padding: 12px;
         }
-
         th {
             background-color: #136b6b;
             color: white;
         }
-
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f2f2f2;
         }
-
-        .aksi-buttons {
-            display: flex;
-            gap: 8px;
+        .table-container {
+            margin-top: 1rem;
         }
-
-        .btn-icon {
-            width: 30px;
-            height: 30px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 14px;
-            color: white;
-        }
-
-        .btn-view { background-color: #3498db; }
-        .btn-edit { background-color: #f1c40f; }
-        .btn-delete { background-color: #e74c3c; }
     </style>
 </head>
 <body>
-
     <h1>Dashboard Admin</h1>
 
     <div class="stats-container">
@@ -156,54 +123,34 @@
     <div style="clear: both;"></div>
 
     <h2 style="margin-top: 4rem;">Data Akun Donatur</h2>
-
     <div class="search-bar">
         <input type="text" placeholder="Search Akun Donatur...">
-    
+        <button>Edit</button>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nama Donatur</th>
-                <th>Alamat Donatur</th>
-                <th>Tanggal Pembuatan</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>01</td>
-                <td>Adam</td>
-                <td>GG.Karamat 1</td>
-                <td>10-02-2024</td>
-                <td>Aktif</td>
-                <td>
-                    <div class="aksi-buttons">
-                        <button class="btn-icon btn-view">👁</button>
-                        <button class="btn-icon btn-edit">✎</button>
-                        <button class="btn-icon btn-delete">🗑</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>02</td>
-                <td>Dani Hamdani</td>
-                <td>Komp. Pesona Bali No 2</td>
-                <td>12.03.2023</td>
-                <td>Non Aktif</td>
-                <td>
-                    <div class="aksi-buttons">
-                        <button class="btn-icon btn-view">👁</button>
-                        <button class="btn-icon btn-edit">✎</button>
-                        <button class="btn-icon btn-delete">🗑</button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Donatur</th>
+                    <th>Alamat Donatur</th>
+                    <th>Tanggal Pembuatan</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for ($i = 0; $i < 5; $i++)
+                    <tr>
+                        <td>ID</td>
+                        <td>Nama Donatur</td>
+                        <td>Alamat Donatur</td>
+                        <td>Tanggal Pembuatan</td>
+                        <td>Status</td>
+                    </tr>
+                @endfor
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
