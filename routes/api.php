@@ -35,3 +35,4 @@ Route::get("/statistics/restorants/{resto}/donations/likes", [StatisticControlle
 
 
 Route::post("/donations/{donation}/update", [DonationController::class, "update"]);
+Route::post("/notifications/read/all", [NotificationController::class, "markReadNotification"]);

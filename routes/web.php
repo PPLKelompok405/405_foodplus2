@@ -165,3 +165,7 @@ Route::get('/receiver/request/{restoId}', function () {
 Route::prefix('api')->group(function () {
     Route::get('/donations/available', [App\Http\Controllers\DonationRequestController::class, 'getAvailableDonations']);
 });
+
+Route::get("/notification", function () {
+    return view("notifikasi.outputnotifikasi");
+});

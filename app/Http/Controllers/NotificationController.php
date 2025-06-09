@@ -18,11 +18,24 @@ class NotificationController extends Controller implements HasMiddleware
     }
 
     public function index(Request $request) {
-        $notifData = $request->user()->notifications()->get();
+        $notifData = $request->user()->unreadNotifications()->get();
         return response()->json([
             "status" => "Success",
             "message" => "Notifications retrieved",
             "data" => $notifData
+        ]);
+    }
+
+    public function markReadNotification(Request $request) {
+        $unReadNotifications = $request->user()->unreadNotifications;
+
+        foreach ($unReadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+
+            return response()->json([
+            "status" => "Success",
+            "message" => "Notifications readed",
         ]);
     }
 
