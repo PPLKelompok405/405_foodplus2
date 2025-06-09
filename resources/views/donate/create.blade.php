@@ -175,7 +175,7 @@
                         </div>
                     @endif
 
-                <form action="{{ route('donations.store') }}" method="POST" enctype="multipart/form-data">
+                <form enctype="multipart/form-data" id="donationForm">
                         @csrf
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label
@@ -231,7 +231,49 @@
                     </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
+    <script>
+document.getElementById('donationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        alert('Anda belum login!');
+        window.location.href = "/login"
+        return;
+    }
+
+    const formData = new FormData(this);
+    const image = formData.get("image");
+    console.log({image});
+
+    try {
+        const response = await fetch('/api/donations', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Accept": "application/json",
+            },
+            body: formData
+        });
+        if (response.ok) {
+            alert('Donasi berhasil dibuat!');
+            window.location.href = '/donate/dashboard';
+        } else {
+            if (result.errors) {
+                let messages = Object.values(result.errors).flat().join('\n');
+                alert('Validasi gagal:\n' + messages);
+            } else {
+                alert('Gagal: ' + result.message);
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Terjadi kesalahan saat mengirim data!: ' + err.message);
+    }
+});
+</script>
 </body>
 </html>

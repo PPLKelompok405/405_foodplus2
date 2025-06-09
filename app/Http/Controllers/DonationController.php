@@ -43,9 +43,6 @@ class DonationController extends Controller implements HasMiddleware
     }
 
     public function store(Request $request) {
-        // dd($request->all());
-
-
         $validatedData = $request->validate([
             "food_name" => "string|required",
             "quantity" => "integer|required",
@@ -65,17 +62,16 @@ class DonationController extends Controller implements HasMiddleware
             ...$validatedData,
             "user_id" => $request->user()->id
         ]);
-$subscribers = User::whereHas('subscriptions', function($query) use ($request) {
+    $subscribers = User::whereHas('subscriptions', function($query) use ($request) {
     $query->where('donor_id', $request->user()->id);
 })->get();
         Notification::send($subscribers, new DonationNotification($donation, $request->user()));
-        return redirect()->route("dashboard.donate");
 
-        // return response()->json([
-        //     "status" => "Success",
-        //     "message" => "Data inserted",
-        //     "data" => $donation
-        // ]);
+        return response()->json([
+            "status" => "Success",
+            "message" => "Data inserted",
+            "data" => $donation
+        ]);
     }
 
     public function show(Request $request, Donation $donation) {
@@ -95,11 +91,12 @@ $subscribers = User::whereHas('subscriptions', function($query) use ($request) {
             abort(403, "Tidak memiliki akses untuk memperbarui donasi ini");
         }
 
+
         $validatedData = $request->validate([
-            "food_name" => "string|sometimes",
-            "quantity" => "integer|sometimes",
-            "location" => "string|sometimes",
-            "category" => "string|sometimes",
+            "food_name" => "string|nullable",
+            "quantity" => "integer|nullable",
+            "location" => "string|nullable",
+            "category" => "string|nullable",
             "image" => "image|nullable|mimes:jpg,jpeg,png|max:4096"
         ]);
 
@@ -113,12 +110,12 @@ $subscribers = User::whereHas('subscriptions', function($query) use ($request) {
 
         $donation->update($validatedData);
 
-        return redirect()->route("dashboard.donate");
-        // return response()->json([
-        //     "status" => "Success",
-        //     "message" => "Donasi berhasil diperbarui",
-        //     "data" => $donation
-        // ]);
+        // return redirect()->route("dashboard.donate");
+        return response()->json([
+            "status" => "Success",
+            "message" => "Donasi berhasil diperbarui",
+            "data" => $donation
+        ]);
     }
 
     public function edit(User $user, Donation $donation) {
@@ -128,11 +125,11 @@ $subscribers = User::whereHas('subscriptions', function($query) use ($request) {
     public function destroy(Donation $donation) {
         $donation->delete();
 
-        return redirect()->route("dashboard.donate");
-        // return response()->json([
-        //     "status" => "Success",
-        //     "message" => "Donation deleted",
-        //     "data" => $donation
-        // ]);
+        // return redirect()->route("dashboard.donate");
+        return response()->json([
+            "status" => "Success",
+            "message" => "Donation deleted",
+            "data" => $donation
+        ]);
     }
 }

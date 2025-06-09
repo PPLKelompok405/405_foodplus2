@@ -185,7 +185,7 @@
                                                     <form action="{{ route('donations.destroy', $donation->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus donasi ini?')">
+                                                        <button  class="btn btn-sm btn-danger" data-id="{{$donation->id}}" id="delete-button">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -209,18 +209,18 @@
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const dropdownMenuButton = document.getElementById("dropdownMenuButton");
-        const banner = document.getElementById("banner");
-        fetch("/api/user", {headers: {
-             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        }}).then(response => response.json()).then(user => {
-            dropdownMenuButton.textContent = user.name
-            banner.innerHTML = `
-            <h2>Selamat Datang, ${user.name}!</h2>
-        `
-        }).catch(err => {
-            allert(err)
-        })
+    const dropdownMenuButton = document.getElementById("dropdownMenuButton");
+    const banner = document.getElementById("banner");
+    fetch("/api/user", {headers: {
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+    }}).then(response => response.json()).then(user => {
+        dropdownMenuButton.textContent = user.name
+        banner.innerHTML = `
+        <h2>Selamat Datang, ${user.name}!</h2>
+    `
+    }).catch(err => {
+        allert(err)
+    })
         fetch('/api/donations/resto/all', {headers: {
             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
         }})
@@ -247,17 +247,36 @@
                                 <div class="btn-group">
                                     <a href="/donations/${donation.id}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                     <a href="/donations/${donation.id}/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                    <form action="/donations/${donation.id}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus donasi ini?')">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </form>
+                                    <div  class="d-inline">
+                                        @method("DELETE")
+                                            <button  class="btn btn-sm btn-danger" data-id='${donation.id}'' id="delete-button">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                 </div>
                             </td>
                         </tr>
                     `;
                     tbody.innerHTML += row;
-                });
+
+                    const deleteButton = document.getElementById("delete-button");
+                    deleteButton.addEventListener("click", async e => {
+                        try{
+                            const response = await  fetch(`/api/donations/${donation.id}`, {
+                                method: "DELETE",
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                                }
+                            })
+                            const data = await response.json();
+                            alert("Donasi berhasil dihapus");
+                            window.location.reload();
+                        }catch(err) {
+                            console.log({err})
+                            alert("Gagal saat mengirim data")
+                        }
+                    })
+                })
             })
             .catch(error => {
                 console.error('Gagal mengambil data:', error.message);
