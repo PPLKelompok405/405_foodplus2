@@ -189,7 +189,7 @@
 
     </div>
     <div class="topbar">
-      <h2>Dashboard</h2>
+      <h2>Dashboard Penerima</h2>
       <div class="flex  items-center gap-3">
       <div class="notification relative cursor-pointer" id="notification-button">
                         <i class="fas fa-bell"></i>
@@ -249,7 +249,7 @@
       <p>{{ \Carbon\Carbon::now()->format('d F Y') }}</p>
     </div>
 
-    <h3 style="margin-bottom: 20px;">Restoran</h3>
+    <h3 style="margin-bottom: 20px;">Restoran Donatur</h3>
     <div class="restoran" id="restoran">
       {{-- @forelse($penyediaList as $penyedia)
       <div class="restoran-card">
