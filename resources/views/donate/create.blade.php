@@ -258,6 +258,7 @@ document.getElementById('donationForm').addEventListener('submit', async functio
             },
             body: formData
         });
+        const result = await response.json();
         if (response.ok) {
             alert('Donasi berhasil dibuat!');
             window.location.href = '/donate/dashboard';

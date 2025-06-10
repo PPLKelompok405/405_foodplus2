@@ -285,7 +285,7 @@
         </div>
     </div>
 
-    <div class="modal" aria-labelledby="dialog-title" role="dialog" id="notificationModal">
+    <div class="modal" aria-labelledby="dialog-title" role="dialog" id="notificationModal" >
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -307,8 +307,6 @@
                                         data-bs-dismiss="modal" aria-label="Close">X</button>
                                 </div>
                             </div>
-
-
                             <div class="mt-2">
                                 {{-- card for every notification --}}
                                 @if(isset($notificationsNotRead))

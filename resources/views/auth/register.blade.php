@@ -62,7 +62,6 @@
         <option value="" disabled selected>Pilih Role</option>
         <option value="penyedia">Donatur</option>
         <option value="penerima">Penerima</option>
-        <option value="admin">Admin</option>
       </select>
       <input type="password" id="password" name="password" placeholder="Password" required />
       <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password" required />

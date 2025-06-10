@@ -29,6 +29,12 @@ class DonationRequestController extends Controller implements HasMiddleware
         $donation->quantity -= $validatedData["quantity"];
         $donation->save();
 
+        if($donation->quantity === 0){
+            $donation->update([
+                "status" => "completed"
+            ]);
+        }
+
         return response()->json([
             "status" => "Success",
             "message" => "request created",
