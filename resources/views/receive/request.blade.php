@@ -156,7 +156,6 @@
       <h2>Request Donasi</h2>
       <div style="position: relative;">
         <button onclick="toggleDropdown()" style="background-color: white; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-          <span style="margin-right: 5px;">🔔</span>
           <span>{{ Auth::user()->name ?? 'penerima' }} ▼</span>
         </button>
         <div id="userDropdown" style="display: none; position: absolute; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; margin-top: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10;">
