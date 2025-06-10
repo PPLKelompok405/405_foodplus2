@@ -108,12 +108,8 @@
     <div class="header">
         <h1>Request Donasi - <span id="restoranNama">Restoran</span></h1>
         <div class="flex items-center gap-2">
-            <div class="notification">🔔</div>
             <form method="POST" action="/logout">
                 @csrf
-                <button type="submit"
-                    class="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-700"
-                    id="logout-button">Log Out</button>
             </form>
         </div>
     </div>

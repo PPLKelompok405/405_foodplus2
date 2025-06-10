@@ -164,14 +164,9 @@
 </head>
 
 <body>
-  <aside>
-    <div>
-      <h1>FOOD+</h1>
-    </div>
-  </aside>
   <main>
     <div class="topbar">
-      <h2>Dashboard</h2>
+      <h2>Dashboard Penerima</h2>
       <div class="flex items-center gap-4">
         <div class="relative cursor-pointer" id="notification-button">
           <i class="fas fa-bell"></i>
@@ -242,7 +237,7 @@
       <p>{{ \Carbon\Carbon::now()->format('d F Y') }}</p>
     </div>
 
-    <h3 style="margin-bottom: 20px;">Restoran</h3>
+    <h3 style="margin-bottom: 20px;">Restoran & Donatur</h3>
     <div class="restoran" id="restoran">
       {{-- @forelse($penyediaList as $penyedia)
       <div class="restoran-card">
@@ -270,7 +265,6 @@
       </div>
       @endforelse --}}
     </div>
-    <p class="footer-note">See Details</p>
   </main>
 
   <div class="modal" aria-labelledby="dialog-title" role="dialog" id="notificationModal">
