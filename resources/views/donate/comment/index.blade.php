@@ -71,7 +71,7 @@
 
                 <!-- Stats -->
                 <div class="flex justify-center space-x-4 text-sm">
-                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full">{{$resto->likes_count}} Likes</span>
+                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full cursor-pointer" id="like-button">{{$resto->likes_count}} Likes</span>
                     <span class="bg-teal-600 text-white px-3 py-1 rounded-full">{{$resto->comments_count}}
                         Comments</span>
                 </div>
@@ -343,6 +343,32 @@
                 }
             });
         });
+
+        const   likeButton = document.getElementById("like-button");
+        likeButton.addEventListener("click", async e => {
+            try {
+                const path = window.location.pathname;
+                const parts = path.split("/");
+
+                const donationId = parts[3];
+                const response = await fetch(`/api/donations/${donationId}/likes`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                    }
+                })
+                if(!response.ok) {
+                    throw new Error("Gagal melakukan like");
+                }
+
+                const json = await response.json();
+                alert("Berhasiil melakukan like");
+                window.location.reload();
+            }catch(err) {
+                console.log({err});
+                alert(err.message);
+            }
+        })
     </script>
 </body>
 
