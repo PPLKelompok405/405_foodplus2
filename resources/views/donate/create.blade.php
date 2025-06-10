@@ -145,22 +145,6 @@
         <div class="main-content">
             <div class="header">
                 <div class="page-title">Tambah Donasi</div>
-                <div class="header-actions">
-                    <div class="notification">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M13.73 21a1.999 1.999 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <div class="notification-badge"></div>
-                    </div>
-                    <div class="language-selector">
-                        <img src="{{ asset('images/flag-id.png') }}" alt="Indonesia Flag" class="flag">
-                        <span>ID</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                </div>
             </div>
 
             <div class="content">
@@ -225,7 +209,7 @@
                             <input type="text" name="location" class="form-input" value="{{ old('location') }}" required>
                         </div>
                         <div class="form-actions">
-                            <a href="{{ route('donations.index') }}" class="cancel-btn">Batal</a>
+                            <a href="/donate/dashboard" class="cancel-btn cancel-btn btn-action">Batal</a>
                             <button type="submit" class="save-btn">Simpan</button>
                         </div>
                     </form>
