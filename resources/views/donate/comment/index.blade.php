@@ -74,6 +74,8 @@
                     <span class="bg-teal-600 text-white px-3 py-1 rounded-full cursor-pointer" id="like-button">{{$likeCount ?? 0}} Likes</span>
                     <span class="bg-teal-600 text-white px-3 py-1 rounded-full">{{$commentCount ?? 0}}
                         Comments</span>
+                         <span class="bg-teal-600 text-white px-3 py-1 rounded-full cursor-pointer" id="subscribe-button">{{$subscribeCount ?? 0}}
+                        Subscribes</span>
                 </div>
             </div>
 
@@ -363,6 +365,37 @@
 
                 const json = await response.json();
                 alert("Berhasiil melakukan like");
+                window.location.reload();
+            }catch(err) {
+                console.log({err});
+                alert(err.message);
+            }
+        })
+
+        const   subscribeButton = document.getElementById("subscribe-button");
+        subscribeButton.addEventListener("click", async e => {
+
+            try {
+                const restoId = "{{$restoReal->id}}"
+
+                const response = await fetch(`/api/subscriptions`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify( {
+                        donor_id: restoId
+                    })
+                })
+                console.log({response});
+                if(!response.ok) {
+                    throw new Error("Gagal melakukan subscribe");
+                }
+
+                const json = await response.json();
+                alert("Berhasiil mensubscribe restoran {{$restoReal->name}}");
                 window.location.reload();
             }catch(err) {
                 console.log({err});
