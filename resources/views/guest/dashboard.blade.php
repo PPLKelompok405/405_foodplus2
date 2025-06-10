@@ -242,7 +242,7 @@
 
         data.forEach(resto => {
             console.log({resto});
-            const imageUrl = `http://localhost:8000/storage/${resto.image_url}`;
+            const imageUrl = `/storage/${resto.image_url}`;
             const item = `
             <div class="bg-[#4E9A9A] p-4 rounded text-white flex items-start space-x-4">
               <img src="${imageUrl}"  class="w-12 h-12 rounded" />

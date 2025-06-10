@@ -164,7 +164,7 @@
                 return;
             }
 
-            fetch(`http://localhost:8000/api/donations/${fetchedDonation.id}/requests`, {
+            fetch(`/api/donations/${fetchedDonation.id}/requests`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -186,7 +186,7 @@
         const segments = path.split("/");
         const foodContainer = document.getElementById("foodContainer");
 
-        fetch(`http://localhost:8000/api/donations/${+segments[3]}`).then(response => response.json()).then(({data: donation}) => {
+        fetch(`api/donations/${+segments[3]}`).then(response => response.json()).then(({data: donation}) => {
             fetchedDonation = donation
             const jsonDonation = JSON.stringify(donation)
             foodContainer.innerHTML += `

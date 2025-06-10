@@ -146,11 +146,6 @@
 
 </head>
 <body>
-  <aside>
-    <div>
-      <h1>FOOD+</h1>
-    </div>
-  </aside>
   <main>
         <div class="modal hidden" aria-labelledby="dialog-title" role="dialog" id="notificationModal">
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
@@ -325,7 +320,7 @@
     data.forEach(donation => {
         restoranContainer.innerHTML += `
             <div class="restoran-card">
-            <img src="${donation.image_url ? 'http://localhost:8000/storage/${donation.image_url}' : ''}" alt="Logo">
+            <img src="${donation.image_url ? '/storage/${donation.image_url}' : ''}" alt="Logo">
             <div class="restoran-info">
             <h4>${donation.food_name} - ${donation?.user?.name ?? "anonymous"}</h4>
             <div class="tags">
@@ -350,7 +345,7 @@
             document.querySelectorAll(".request-donasi-button").forEach(button => {
             button.addEventListener("click", () => {
                 const donationId = button.getAttribute("data-id");
-                window.location.href = `http://localhost:8000/receiver/request/${donationId}`;
+                window.location.href = `/receiver/request/${donationId}`;
             });
 });
     })
