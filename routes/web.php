@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Donation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -177,3 +178,6 @@ Route::delete('/admin/donatur/{id}', [App\Http\Controllers\AdminController::clas
 // Route untuk edit donatur (admin)
 Route::get('/admin/donatur/{id}/edit', [App\Http\Controllers\AdminController::class, 'edit'])->name('admin.donatur.edit');
 Route::put('/admin/donatur/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.donatur.update');
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

@@ -43,7 +43,12 @@ class AuthController extends Controller
         $isPasswordMatch = Hash::check($validatedData["password"], $userExistOnDatabase->password);
         abort_if(!$isPasswordMatch, 401, "Credential not match");
 
+        $user = User::where("email", $validatedData["email"])->first();
+
+
         $token = $userExistOnDatabase->createToken("access-token");
+
+        $cookie = cookie('user_id', $user->id, 180);
 
         return response()->json([
             "status" => "success",
@@ -51,7 +56,7 @@ class AuthController extends Controller
             "data" => [
                 "accessToken" => $token->plainTextToken,
                 "role" => $userExistOnDatabase->role
-            ]]);
+            ]])->cookie($cookie);
 
     }
 
