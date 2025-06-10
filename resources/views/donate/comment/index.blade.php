@@ -53,7 +53,6 @@
                     </div>
                 </div>
 
-
                 <!-- Rating -->
                 <div class="flex justify-center items-center mb-4">
                     @for($i = 1; $i <= $averageRating; $i++)

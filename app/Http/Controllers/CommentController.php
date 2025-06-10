@@ -41,10 +41,12 @@ $transaction = $donation->transactions()
         $quantity = $transaction->quantity;
     }
 
-        $averageRating = round(
-            Comment::whereIn('donation_id', $resto->donations->pluck('id'))->avg('rating'),
-            1
-        );
+    $averageRating = $donation->comments()->average("rating");
+
+        // $averageRating = round(
+        //     Comment::whereIn('donation_id', $resto->donations->pluck('id'))->avg('rating'),
+        //     1
+        // );
 
         return view('donate.comment.index', compact('resto', 'comments', 'averageRating', 'donations', "transaction", "quantity"));
    }

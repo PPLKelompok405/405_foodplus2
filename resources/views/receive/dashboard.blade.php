@@ -331,8 +331,8 @@
             <div class="tags">
             ${donation.category}
             </div>
-            <div class="stats">
-            <span style="text-decoration: none;" href="/resto/like/${donation.id}">
+            <div class="stats cursor-pointer like-button" data-id='${donation.id}'>
+            <span style="text-decoration: none;">
             ${donation.likes_count ?? 0} Likes
             </span>
             <a style="text-decoration: none;" href="/resto/comment/${donation.id}">
@@ -444,8 +444,6 @@
             document.getElementById("notificationModal").classList.remove("show");
             document.getElementById("notificationModal").style.display = "none";
         })
-
-
   </script>
 </body>
 </html>
