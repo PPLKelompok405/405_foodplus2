@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         * {
@@ -20,68 +22,25 @@
         }
 
         body {
-            background-color: #ffffff;
+            background-color: #f5f5f5;
         }
 
-        .container {
-            width: 100%;
+        .container-fluid {
             min-height: 100vh;
             display: flex;
+            justify-content: center; /* Center the content */
+            align-items: flex-start; /* Align content to the top */
         }
-
-        .sidebar {
-            width: 220px;
-            background-color: #ffffff;
-            border-right: 1px solid #e0e0e0;
-            padding: 20px;
-        }
-
-        .logo {
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 40px;
-            color: #1a237e;
-        }
-
-        .sidebar-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #666;
-            text-decoration: none;
-            padding: 10px 0;
-        }
-
-        .menu-item.active {
-            color: #1a237e;
-            font-weight: 600;
-        }
-
-        .menu-icon {
-            width: 24px;
-            height: 24px;
-            color: #666;
-        }
-
-        .logout {
-            position: absolute;
-            bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #666;
-            text-decoration: none;
-        }
-
+        
         .main-content {
-            flex: 1;
+            width: 100%;
+            max-width: 800px; /* Set a max-width for better readability on large screens */
             padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            margin-bottom: 40px;
         }
 
         .header {
@@ -89,6 +48,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
         }
 
         .page-title {
@@ -97,45 +58,8 @@
             color: #333;
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .notification {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 6px;
-            height: 6px;
-            background-color: red;
-            border-radius: 50%;
-        }
-
-        .language-selector {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .flag {
-            width: 24px;
-            height: 16px;
-        }
-
-        .content {
-            margin-top: 20px;
-        }
-
         .form-container {
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
         .form-group {
@@ -149,38 +73,44 @@
             color: #333;
         }
 
-        .form-input {
+        .form-input, .form-select {
             width: 100%;
             padding: 15px;
             border-radius: 8px;
-            border: none;
-            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
             font-size: 16px;
             font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #2d7d8a;
+            box-shadow: 0 0 0 3px rgba(45, 125, 138, 0.2);
+        }
+        
+        #image_url {
+            padding: 20px;
+            border: 2px dashed #ccc;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        #image_url:hover {
+            border-color: #2d7d8a;
+            background-color: #f0f8fa;
+        }
+        
         .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
             margin-top: 30px;
         }
-
-        .save-btn {
-            background-color: #2d7d8a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 15px 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .cancel-btn {
-            background-color: #b4b4b4;
-            color: white;
+        
+        .btn-action {
             border: none;
             border-radius: 8px;
             padding: 15px 30px;
@@ -191,135 +121,103 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
         }
+
+        .save-btn {
+            background-color: #2d7d8a;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: #236570;
+            transform: translateY(-2px);
+        }
+
+        .cancel-btn {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #d1d1d1;
+        }
+
+        #alert-message {
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        #alert-message.success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        #alert-message.error {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">FOOD+</div>
-            <div class="sidebar-menu">
-                <a href="#" class="menu-item">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="8" r="5" />
-                        <path d="M3,21 L21,21 C21,16.0294373 16.9705627,12 12,12 C7.02943725,12 3,16.0294373 3,21 Z" />
-                    </svg>
-                    Profile
-                </a>
-                <a href="{{ route('donations.index') }}" class="menu-item active">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M3,13 L12,4 L21,13 L21,21 L3,21 L3,13 Z M7,13 L7,17 L11,17 L11,13 L7,13 Z M13,13 L13,17 L17,17 L17,13 L13,13 Z" />
-                    </svg>
-                    Donasi
-                </a>
-            </div>
-            <form action="{{ route('logout') }}" method="POST" class="logout">
-                @csrf
-                <button type="submit"
-                    style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #666;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    LogOut
-                </button>
-            </form>
-        </div>
+    <div class="container-fluid">
+        <!-- Sidebar has been removed -->
 
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
-                <div class="page-title">Tambah Donasi</div>
-                <div class="header-actions">
-                    <div class="notification">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M13.73 21a1.999 1.999 0 0 1-3.46 0" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <div class="notification-badge"></div>
-                    </div>
-                    <div class="language-selector">
-                        <img src="{{ asset('images/flag-id.png') }}" alt="Indonesia Flag" class="flag">
-                        <span>ID</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                </div>
+                <a href="/donate/dashboard" class="btn btn-light"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+                <div class="page-title">Tambah Donasi Baru</div>
             </div>
 
             <div class="content">
                 <div class="form-container">
-                    @if ($errors->any())
-                        <div
-                            style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
-                            <ul style="margin: 0; padding-left: 20px;">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    
+                    <!-- Alert Message Placeholder -->
+                    <div id="alert-message"></div>
 
-                    <form action="{{ route('donations.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label class="form-label" for="image_url"
-                                style="display: block; font-weight: bold; margin-bottom: 8px; font-size: 16px; color: #333;">
-                                Upload Gambar Makanan
-                            </label>
-
-                            <input type="file" name="image" id="image_url" required style="
-                                    display: block;
-                                    padding: 10px;
-                                    font-size: 14px;
-                                    border: 2px dashed #aaa;
-                                    border-radius: 8px;
-                                    width: 100%;
-                                    cursor: pointer;
-                                    transition: border-color 0.3s ease;
-                                " onmouseover="this.style.borderColor='#777'"
-                                onmouseout="this.style.borderColor='#aaa'">
-                            <small style="color: #666; font-size: 12px;">
-                                Format gambar harus .jpg, .jpeg, atau .png. Maksimal 4MB.
+                    <form id="donation-form" enctype="multipart/form-data">
+                        <!-- CSRF token will be sent via headers in JS, but keeping it can be a fallback -->
+                        @csrf 
+                        <div class="form-group">
+                            <label class="form-label" for="image_url">Upload Gambar Makanan</label>
+                            <input type="file" name="image" id="image_url" class="form-input" required>
+                            <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                                Format yang diizinkan: .jpg, .jpeg, .png. Ukuran maksimal: 4MB.
                             </small>
                         </div>
+
                         <div class="form-group">
-                            <label class="form-label">Nama Makanan</label>
-                            <input type="text" id="food_name" name="food_name" class="form-input" value="{{ old('food_name') }}"
-                                required>
+                            <label class="form-label" for="food_name">Nama Makanan</label>
+                            <input type="text" id="food_name" name="food_name" class="form-input" required>
                         </div>
+
                         <div class="form-group">
-                            <label class="form-label">Kategori Makanan</label>
-                            <select name="category" id="category" class="form-input" required>
+                            <label class="form-label" for="category">Kategori Makanan</label>
+                            <select name="category" id="category" class="form-select" required>
                                 <option value="makanan">Makanan</option>
                                 <option value="minuman">Minuman</option>
                             </select>
                         </div>
+
                         <div class="form-group">
-                            <label class="form-label">Jumlah</label>
-                            <input type="number" id="quantity" name="quantity" class="form-input" value="{{ old('quantity') }}"
-                                required>
+                            <label class="form-label" for="quantity">Jumlah (Porsi)</label>
+                            <input type="number" id="quantity" name="quantity" class="form-input" min="1" required>
                         </div>
+
                         <div class="form-group">
-                            <label class="form-label">Lokasi</label>
-                            <input type="text" id="location" name="location" class="form-input" value="{{ old('location') }}"
-                                required>
+                            <label class="form-label" for="location">Lokasi Pengambilan</label>
+                            <input type="text" id="location" name="location" class="form-input" required>
                         </div>
+
                         <div class="form-actions">
-                            <a href="{{ route('donations.index') }}" class="cancel-btn">Batal</a>
-                            <button type="submit" class="save-btn" id="submit-button">Simpan</button>
+                            <a href="/donate/dashboard" class="cancel-btn btn-action">Batal</a>
+                            <button type="submit" class="save-btn btn-action" id="submit-button">Simpan Donasi</button>
                         </div>
                     </form>
                 </div>
@@ -327,35 +225,67 @@
         </div>
     </div>
     <script>
-        const submitButtonElement = document.getElementById("submit-button");
-        submitButtonElement.addEventListener("click", async e => {
-            e.preventDefault();
-            try {
-                const formData = new FormData();
-                formData.append('image', document.getElementById('image_url').files[0]);
-                formData.append('food_name', document.getElementById('food_name').value);
-                formData.append('category', document.getElementById('category').value);
-                formData.append('quantity', document.getElementById('quantity').value);
-                formData.append('location', document.getElementById('location').value);
+        const donationForm = document.getElementById("donation-form");
+        const submitButton = document.getElementById("submit-button");
+        const alertMessage = document.getElementById("alert-message");
 
+        donationForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            submitButton.disabled = true;
+            submitButton.textContent = "Menyimpan...";
+
+            // Clear previous alert
+            alertMessage.style.display = "none";
+            alertMessage.textContent = "";
+            alertMessage.className = "";
+
+            const formData = new FormData();
+            formData.append('image', document.getElementById('image_url').files[0]);
+            formData.append('food_name', document.getElementById('food_name').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('quantity', document.getElementById('quantity').value);
+            formData.append('location', document.getElementById('location').value);
+            
+            try {
                 const response = await fetch("/api/donations", {
                     method: "POST",
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                        // The 'Content-Type' header is not needed here; the browser sets it for FormData.
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
                     },
                     body: formData
                 });
-                const json = await response.json();
+
+                const result = await response.json();
+
                 if (response.ok) {
-                    alert("Donasi berhasil ditambahkan");
-                    window.location.href = "/donate/dashboard";
+                    showAlert("Donasi berhasil ditambahkan!", "success");
+                    donationForm.reset();
+                    setTimeout(() => {
+                        window.location.href = "/donate/dashboard";
+                    }, 2000); // Redirect after 2 seconds
                 } else {
-                    throw new Error(json.message);
+                    // Handle validation errors or other server errors
+                    const errorMessage = result.message || "Terjadi kesalahan. Silakan coba lagi.";
+                    showAlert(errorMessage, "error");
                 }
             } catch (err) {
-                console.log(err);
+                console.error("An error occurred:", err);
+                showAlert("Tidak dapat terhubung ke server. Periksa koneksi Anda.", "error");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Simpan Donasi";
             }
-        })
+        });
+
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = type; // 'success' or 'error'
+            alertMessage.style.display = "block";
+            window.scrollTo(0, 0); // Scroll to the top to make the message visible
+        }
+
     </script>
 </body>
 
