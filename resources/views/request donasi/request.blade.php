@@ -120,19 +120,6 @@
     @push('scripts')
     <script>
 
-        let foodItems = [];
-
-        // function initializePage() {
-        //     const container = document.getElementById('foodContainer');
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const restoranNama = urlParams.get('restoran') || 'KFC';
-        //     document.getElementById('restoranNama').textContent = restoranNama;
-
-        //     foodItems = foodDatabase[restoranNama] || [];
-        //     const foodCards = foodItems.map(food => createFoodCard(food)).join('');
-        //     container.innerHTML = foodCards;
-        // }
-
         function createFoodCard(food) {
             return `
                 <div class="food-card">
@@ -149,6 +136,10 @@
             `;
         }
 
+        const actionButton = document.querySelector(".action-buttons");
+        console.log({actionButton});
+
+
         function cancelRequest(foodName) {
             const input = document.getElementById(`quantity-${foodName}`);
             input.value = '';
@@ -157,6 +148,7 @@
         let fetchedDonation = null;
 
         function confirmRequest(donation) {
+
             console.log({fetchedDonation})
             const input = document.getElementById(`quantity-${fetchedDonation.food_name}`);
             const quantity = parseInt(input.value);
@@ -181,10 +173,13 @@
                 body: JSON.stringify({
                     quantity: input.value
                 })
-            }).then(response => response.json()).then(val => {alert(val.message)
+            }).then(response => response.json()).then(val => {
+                alert(val.message)
                 window.location.href = "http://localhost:8000/receive/dashboard"
             })
             .catch(err => console.log({err}))
+
+
         }
 
         const path = window.location.pathname;
@@ -213,7 +208,6 @@
                 const value = event.target.value;
                 itemText.textContent = `X${value} items`;
             })
-            console.log({donation})
         });
     </script>
     @endpush

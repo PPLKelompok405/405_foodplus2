@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Donation;
 use App\Models\User;
@@ -181,3 +182,6 @@ Route::put('/admin/donatur/{id}', [App\Http\Controllers\AdminController::class, 
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+Route::get('/resto/comment/{donation}', [CommentController::class, 'index'])->name('donate.comment');
+Route::post('/resto/{donation}/comment/store', [CommentController::class, 'store'])->name('donate.comment.store');

@@ -223,7 +223,8 @@
     const totalPenerima = document.getElementById("total-penerima")
     const totalMakanan = document.getElementById("total-makanan")
 
-    const restoranCard = document.getElementById("restoran");
+    const restoranContainer = document.getElementById("restoran");
+
 
     fetch("/api/statistics/receiver/dashboard/summary", {method: "GET"}).then(response => response.json()).then(({data}) => {
         const totalResto = data.total_resto;
@@ -256,32 +257,38 @@
     fetch('/api/donations', {headers: {
             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
     }}).then(response => response.json()).then(({data}) => {
-        restoranCard.innerHTML = ``;
-        console.log({data});
-        data.map(donation => {
-            console.log({donation})
-            restoranCard.innerHTML += `
-        <div class="restoran-card">
-        <img src="http://localhost:8000/storage/${donation.image_url}" alt="Logo">
-        <div class="restoran-info">
-          <h4>${donation.food_name} - ${donation.user.name}</h4>
-          <div class="tags">
-          ${donation.category}
-          </div>
-          <div class="stats">
-                <p class="mt-2 text-sm text-gray-200">302,624 Views ·  3000 Likes · 400 comments</p>
-          </div>
-          <button type="button" id="request-donasi" class="request-btn " style="cursor: pointer; display: inline-block; margin-top: 10px; background-color: #ffb703; color: #333; padding: 5px 10px; border-radius: 5px; font-weight: bold;" id="request-donasi">
-            Request Donasi
-        </button>
+    data.forEach(donation => {
+        restoranContainer.innerHTML += `
+            <div class="restoran-card">
+            <img src="${donation.image_url ? 'http://localhost:8000/storage/${donation.image_url}' : ''}" alt="Logo">
+            <div class="restoran-info">
+            <h4>${donation.food_name} - ${donation?.user?.name ?? "anonymous"}</h4>
+            <div class="tags">
+            ${donation.category}
+            </div>
+            <div class="stats">
+            <a style="text-decoration: none;" href="/resto/like/${donation.id}">
+            ${donation.likes_count ?? 0} Likes
+            </a>
+            <a style="text-decoration: none;" href="/resto/comment/${donation.id}">
+                · ${donation.comments_count ?? 0} Comments
+            </a>
+
+            </div>
+            <button type="button" id="request-donasi" class="request-btn request-donasi-button" style="cursor: pointer; display: inline-block; margin-top: 10px; background-color: #ffb703; color: #333; padding: 5px 10px; border-radius: 5px; font-weight: bold;" id="request-donasi" data-id='${donation.id}'>
+                Request Donasi
+            </button>
+            </div>
         </div>
-      </div>
-        `
-        const requestDonationButton = document.getElementById("request-donasi")
-        requestDonationButton.addEventListener("click", () => {
-            window.location.href = `http://localhost:8000/receiver/request/${donation.id}`
-        })
-        })
+            `
+
+            document.querySelectorAll(".request-donasi-button").forEach(button => {
+            button.addEventListener("click", () => {
+                const donationId = button.getAttribute("data-id");
+                window.location.href = `http://localhost:8000/receiver/request/${donationId}`;
+            });
+});
+    })
 
     })
 

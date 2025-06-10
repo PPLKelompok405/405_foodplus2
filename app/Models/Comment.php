@@ -10,8 +10,7 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class Comment extends Model
 {
-    protected $fillable = ["comment", "donation_id", "user_id"];
-    //
+protected $fillable = ["comment", "transaction_id", "user_id", "headline", "rating"];    //
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
