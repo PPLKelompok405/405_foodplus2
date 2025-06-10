@@ -71,8 +71,8 @@
 
                 <!-- Stats -->
                 <div class="flex justify-center space-x-4 text-sm">
-                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full cursor-pointer" id="like-button">{{$resto->likes_count}} Likes</span>
-                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full">{{$resto->comments_count}}
+                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full cursor-pointer" id="like-button">{{$likeCount ?? 0}} Likes</span>
+                    <span class="bg-teal-600 text-white px-3 py-1 rounded-full">{{$commentCount ?? 0}}
                         Comments</span>
                 </div>
             </div>

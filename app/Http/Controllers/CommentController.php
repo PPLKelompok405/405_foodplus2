@@ -30,6 +30,9 @@ class CommentController extends Controller implements HasMiddleware
 
        $resto = User::where('id', $_COOKIE["user_id"])->withCount('comments')->withCount('likes')->first();
 
+       $likeCount = $donation->likes()->count();
+       $commentCount = $donation->comments()->count();
+
 
         $comments = $donation->comments()->orderByDesc("created_at")->get();
         $donations = $resto->donations;
@@ -43,12 +46,7 @@ $transaction = $donation->transactions()
 
     $averageRating = $donation->comments()->average("rating");
 
-        // $averageRating = round(
-        //     Comment::whereIn('donation_id', $resto->donations->pluck('id'))->avg('rating'),
-        //     1
-        // );
-
-        return view('donate.comment.index', compact('resto', 'comments', 'averageRating', 'donations', "transaction", "quantity"));
+        return view('donate.comment.index', compact('resto', 'comments', 'averageRating', 'donations', "transaction", "quantity", "likeCount", "commentCount"));
    }
 
 
