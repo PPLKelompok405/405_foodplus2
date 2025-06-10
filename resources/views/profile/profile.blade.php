@@ -123,7 +123,8 @@
   </nav>
 
   <div class="container">
-    <h2>Hi, {{ $user["name"] ?? 'Pengguna' }}</h2>@if(session('success'))
+    <h2>Hi, {{ $user["name"] ?? 'Pengguna' }}</h2>
+    @if(session('success'))
     <div class="alert alert-success">
         <p> {{ session('success') }}
             </p>
@@ -131,9 +132,7 @@
 @endif
     <form action="{{ route('profile.update') }}" method="POST">
       @csrf
-      @method('POST')
-
-
+      @method('PUT')
       <label for="name">Nama *</label>
       <input type="text" id="name" name="name" value="{{ old('name', $user["name"]) }}" required>
 
@@ -142,23 +141,23 @@
           <label for="email">Email *</label>
           <input type="email" id="email" name="email" value="{{ old('email', $user["email"]) }}" required>
         </div>
-        <div class="col">
-          <label for="phone">Number Telepon</label>
-          <input type="text" id="phone" name="phone" value="{{ old('phone', $user["phone"] ?? '') }}">
-        </div>
       </div>
-
-      <label for="alamat">Alamat *</label>
-      <input type="text" id="alamat" name="alamat" value="{{ old('alamat', $user["address"] ?? '') }}" required>
 
       <label for="password">Password *</label>
       <input type="password" id="password" name="password" placeholder="Kosongkan jika tidak ingin ubah">
 
       <div class="buttons">
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <button type="reset" class="btn btn-secondary">Batal</button>
+        <button type="reset" class="btn btn-secondary" id="cancel">Batal</button>
       </div>
     </form>
   </div>
+  <script>
+    const cancelButton = document.getElementById("cancel");
+    console.log({cancelButton})
+    cancelButton.addEventListener("click", e => {
+        window.location.href = "/donate/dashboard"
+    })
+  </script>
 </body>
 </html>

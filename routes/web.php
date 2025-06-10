@@ -181,7 +181,7 @@ Route::get('/admin/donatur/{id}/edit', [App\Http\Controllers\AdminController::cl
 Route::put('/admin/donatur/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.donatur.update');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::get('/resto/comment/{donation}', [CommentController::class, 'index'])->name('donate.comment');
 Route::post('/resto/{donation}/comment/store', [CommentController::class, 'store'])->name('donate.comment.store');

@@ -18,7 +18,10 @@ class AuthController extends Controller
         $userExistOnDatabase = User::where("email", $validatedData["email"])->exists();
         abort_if($userExistOnDatabase, 400, "User exist on database");
 
-        $newUser = User::create($validatedData);
+        $newUser = User::create([
+            ...$validatedData,
+            "password" => Hash::make($validatedData["password"])
+        ]);
         return response()->json([
             "status" => "success",
             "message" => "User Created",
