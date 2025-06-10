@@ -111,7 +111,7 @@
 
                         <!-- Footer -->
                         <div class="flex items-center justify-between text-sm text-gray-500 border-t border-gray-200 pt-3">
-                            <span>Jumlah Donasi Yang Diterima: {{ $quantity }} {{ $comment->transaction->donation->food_name }}</span>
+                            <span>Jumlah Donasi Yang Diterima: {{ $quantity }} </span>
                             <span>{{ $comment->created_at ? date_format($comment->created_at, 'd M Y') : '' }}</span>
                         </div>
                     </div>

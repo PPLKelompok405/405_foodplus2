@@ -32,7 +32,6 @@ class CommentController extends Controller implements HasMiddleware
 
 
         $comments = $donation->comments()->orderByDesc("created_at")->get();
-        dd($comments, $donation);
         $donations = $resto->donations;
 $transaction = $donation->transactions()
     ->where('receiver_id', $_COOKIE["user_id"])
