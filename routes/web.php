@@ -104,6 +104,8 @@ Route::post('/login', function (Request $request) {
         return view('user.dashboard');
     })->name('dashboard.user');
 
+    Route::get("/admin/dashboard", [App\Http\Controllers\AdminController::class, 'index'])->name("dashboard.admin");
+
     // Route untuk donasi
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
     Route::get('/donations/create', function () {
@@ -169,3 +171,9 @@ Route::prefix('api')->group(function () {
 Route::get("/notification", function () {
     return view("notifikasi.outputnotifikasi");
 });
+
+Route::delete('/admin/donatur/{id}', [App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.donatur.destroy');
+
+// Route untuk edit donatur (admin)
+Route::get('/admin/donatur/{id}/edit', [App\Http\Controllers\AdminController::class, 'edit'])->name('admin.donatur.edit');
+Route::put('/admin/donatur/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.donatur.update');

@@ -6,6 +6,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonationRequestController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Http\Request;
@@ -36,3 +37,6 @@ Route::get("/statistics/restorants/{resto}/donations/likes", [StatisticControlle
 
 Route::post("/donations/{donation}/update", [DonationController::class, "update"]);
 Route::post("/notifications/read/all", [NotificationController::class, "markReadNotification"]);
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

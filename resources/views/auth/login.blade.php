@@ -99,12 +99,13 @@
                 console.log("Login berhasil:", data);
                 const accessToken = data.data.accessToken;
                 localStorage.setItem("accessToken", accessToken);
+                console.log({data});
 
                 if (data.data.role === "penyedia") {
                     window.location.href = "/donate/dashboard";
                 } else if (data.data.role === "penerima") {
                     window.location.href = "/receive/dashboard";
-                } else {
+                } else if(data.data.role === "admin"){
                     window.location.href = "/admin/dashboard";
                 }
             })
