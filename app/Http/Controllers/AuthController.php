@@ -45,12 +45,15 @@ class AuthController extends Controller
 
         $token = $userExistOnDatabase->createToken("access-token");
 
+        setcookie('user_id', $userExistOnDatabase->id, time() + 60 * 60 * 24 * 30, '/');
+
         return response()->json([
             "status" => "success",
             "message" => "Login success",
             "data" => [
                 "accessToken" => $token->plainTextToken,
-                "role" => $userExistOnDatabase->role
+                "role" => $userExistOnDatabase->role,
+                "user" => $userExistOnDatabase
             ]]);
 
     }
@@ -70,6 +73,8 @@ class AuthController extends Controller
             // Hapus semua token jika menggunakan TransientToken
             $request->user()->tokens()->delete();
         }
+
+        setcookie('user_id', '', time() - 3600, '/');
 
         return response()->json([
             "status" => "success",

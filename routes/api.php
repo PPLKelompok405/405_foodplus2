@@ -15,24 +15,25 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource("donations", DonationController::class);
-Route::apiResource("donations.requests", DonationRequestController::class);
-Route::apiResource("subscriptions", SubscriptionController::class);
+Route::get("donations/{resto}", [DonationController::class, "getDonation"]);
+Route::get("donations", [DonationController::class, "index"]);
+Route::post("donations", [DonationController::class, "store"]);
+Route::post("donations/{donation}/requests", [DonationRequestController::class, "store"]);
+Route::get("donations/{donation}/subscribe", [DonationRequestController::class, "subscribe"]);
+Route::get("subscriptions/{donation}", [SubscriptionController::class, "index"]);
 Route::apiResource("notifications", NotificationController::class);
+Route::post("notifications/read-all", [NotificationController::class, "readAll"]);
 Route::apiResource("donations.comments", CommentController::class);
-Route::apiResource("donations.likes", LikeController::class);
+Route::get("donations/{donation}/likes", [LikeController::class, "index"]);
 
 Route::post("/auth/register", [AuthController::class, "register"]);
 Route::post("/auth/login", [AuthController::class, "login"]);
 Route::post("/auth/logout", [AuthController::class, "logout"])->middleware("auth:sanctum");
 Route::get("/donations/resto/all", [DonationController::class, "getDonationsByResto"]);
+Route::get("/restos/all", [DonationController::class, "getAllResto"]);
 
 
 // Dashboard Statistic
 Route::get("/statistics/receiver/dashboard/summary", [StatisticController::class, "getReceiverStatisticDashboard"]);
 Route::get("/statistics/restorants/{resto}/donations/comments", [StatisticController::class, "getCountCommentsBelongToResto"]);
 Route::get("/statistics/restorants/{resto}/donations/likes", [StatisticController::class, "getCountLikedBelongToResto"]);
-
-
-Route::post("/donations/{donation}/update", [DonationController::class, "update"]);
-Route::post("/notifications/read/all", [NotificationController::class, "markReadNotification"]);

@@ -75,7 +75,8 @@
                         <div class="notification-badge"></div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" id="dropdownMenuButton">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            {{ Auth::user()->name }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
@@ -91,8 +92,9 @@
 
             <div class="content">
                 <div class="form-container">
-                    <form enctype="multipart/form-data" id="donationForm">
+                    <form action="{{ route('donations.update', $donation->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label
                                 class="form-label"
@@ -165,62 +167,5 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-     <script>
-
-        const dropdownMenuButton = document.getElementById("dropdownMenuButton");
-        const banner = document.getElementById("banner");
-        fetch("/api/user", {headers: {
-             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        }}).then(response => response.json()).then(user => {
-            dropdownMenuButton.textContent = user.name
-            banner.innerHTML = `
-            <h2>Selamat Datang, ${user.name}!</h2>
-        `
-        }).catch(err => {
-            allert(err)
-        });
-
-document.getElementById('donationForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        alert('Anda belum login!');
-        window.location.href = "/login"
-        return;
-    }
-    const formData = new FormData(this);
-
-    for (let [key, value] of formData.entries()) {
-    console.log(`${key}: ${value}`);
-}
-    try {
-        const donationId = {{$donation->id}};
-        const response = await fetch(`/api/donations/${donationId}/update`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                "Accept": "application/json",
-            },
-            body: formData
-        });
-        const result = await response.json();
-        if (response.ok) {
-            alert('Donasi berhasil diubah!');
-            window.location.href = '/donate/dashboard';
-        } else {
-            if (result.errors) {
-                let messages = Object.values(result.errors).flat().join('\n');
-                alert('Validasi gagal:\n' + messages);
-            } else {
-                alert('Gagal: ' + result.message);
-            }
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Terjadi kesalahan saat mengirim data!: ' + err.message);
-    }
-});
-    </script>
 </body>
 </html>

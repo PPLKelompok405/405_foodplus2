@@ -74,8 +74,8 @@
                         <div class="notification-badge"></div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" id="dropdownMenuButton">
-
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            {{ json.parse(localStorage.getItem("user")).name }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
@@ -94,7 +94,7 @@
                     <div class="detail-item">
                         <div class="detail-label">Gambar Makanan</div>
                         <div class="detail-value">
-                            <img src="{{ asset("storage/" . $donation->image_url)  }}" width="50%"/></div>
+                            <img src="{{ asset("storage/" . $donation->image_url)  }}" /></div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Nama Makanan</div>
@@ -123,17 +123,3 @@
                     <div class="detail-item">
                         <div class="detail-label">Terakhir Diperbarui</div>
                        <div class="detail-value">{{ $donation->updated_at->format('d M Y') }}</div>
-<script>
-const dropdownMenuButton = document.getElementById("dropdownMenuButton");
-        const banner = document.getElementById("banner");
-        fetch("/api/user", {headers: {
-             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        }}).then(response => response.json()).then(user => {
-            dropdownMenuButton.textContent = user.name
-            banner.innerHTML = `
-            <h2>Selamat Datang, ${user.name}!</h2>
-        `
-        }).catch(err => {
-            allert(err)
-        })
-</script>
